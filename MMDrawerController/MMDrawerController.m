@@ -1047,7 +1047,14 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
         case UIGestureRecognizerStateChanged:{
             self.view.userInteractionEnabled = NO;
             CGRect newFrame = self.startingPanRect;
+            
+            // Because we are using fake frame for the center container view. The library thinks that the center view has been translated left or right based on opening side. But because we fake it by using fake frame, the point we get from translationInView will not work properly in that case and we have to fake it as well by adding some margins .
             CGPoint translatedPoint = [panGesture translationInView:self.centerContainerView];
+            float margin = 0;
+            if (self.openSide == MMDrawerSideRight) margin =-1* _maximumRightDrawerWidth;
+            if (self.openSide == MMDrawerSideLeft) margin = 1 * _maximumLeftDrawerWidth;
+            translatedPoint.x += margin;
+            
             newFrame.origin.x = [self roundedOriginXForDrawerConstriants:CGRectGetMinX(self.startingPanRect)+translatedPoint.x];
             newFrame = CGRectIntegral(newFrame);
             CGFloat xOffset = newFrame.origin.x;
