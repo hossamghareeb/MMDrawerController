@@ -1262,6 +1262,7 @@ static inline CGFloat originXForDrawerOriginAndTargetOriginOffset(CGFloat origin
     UIViewController * sideDrawerViewControllerToHide = [self sideDrawerViewControllerForSide:drawerToHide];
 
     [self.childControllerContainerView bringSubviewToFront:sideDrawerViewControllerToHide.view];
+    [self.childControllerContainerView bringSubviewToFront:sideDrawerViewControllerToPresent.view];
     [sideDrawerViewControllerToHide.view setHidden:YES];
     [sideDrawerViewControllerToPresent.view setHidden:NO];
     [self resetDrawerVisualStateForDrawerSide:drawer];
