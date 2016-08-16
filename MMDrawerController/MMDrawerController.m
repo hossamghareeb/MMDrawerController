@@ -83,9 +83,38 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 @interface MMDrawerCenterContainerView : UIView
 @property (nonatomic,assign) MMDrawerOpenCenterInteractionMode centerInteractionMode;
 @property (nonatomic,assign) MMDrawerSide openSide;
+@property (nonatomic, assign) CGRect fakeFrame;
+@property (nonatomic, assign) CGPoint fakeCenter;
+
 @end
 
 @implementation MMDrawerCenterContainerView
+
+-(instancetype)initWithFrame:(CGRect)frame{
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.fakeFrame = frame;
+    }
+    return self;
+}
+
+-(void)setCenter:(CGPoint)center{
+    if (CGPointEqualToPoint(self.fakeCenter, CGPointZero)) {
+        //        [super setCenter:center];
+        self.fakeCenter = center;
+    }
+}
+
+-(CGRect)frame{
+    return self.fakeFrame;
+}
+-(void)setFrame:(CGRect)frame{
+    if (CGRectEqualToRect(self.fakeFrame, CGRectZero)) {
+        [super setFrame:frame];
+    }
+    self.fakeFrame = frame;
+}
+
 
 -(UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event{
     UIView *hitView = [super hitTest:point withEvent:event];
@@ -835,13 +864,13 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
         
         if((self.openSide == drawerSide) &&
            [self.childControllerContainerView.subviews containsObject:self.centerContainerView]){
-            [self.childControllerContainerView insertSubview:viewController.view belowSubview:self.centerContainerView];
+            [self.childControllerContainerView insertSubview:viewController.view aboveSubview:self.centerContainerView];
             [viewController beginAppearanceTransition:YES animated:NO];
             [viewController endAppearanceTransition];
         }
         else{
             [self.childControllerContainerView addSubview:viewController.view];
-            [self.childControllerContainerView sendSubviewToBack:viewController.view];
+//            [self.childControllerContainerView sendSubviewToBack:viewController.view];
             [viewController.view setHidden:YES];
         }
         [viewController didMoveToParentViewController:self];
