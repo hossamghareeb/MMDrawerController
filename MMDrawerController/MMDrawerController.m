@@ -870,7 +870,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
         }
         else{
             [self.childControllerContainerView addSubview:viewController.view];
-//            [self.childControllerContainerView sendSubviewToBack:viewController.view];
+            [self.childControllerContainerView bringSubviewToFront:viewController.view];
             [viewController.view setHidden:YES];
         }
         [viewController didMoveToParentViewController:self];
@@ -1261,7 +1261,7 @@ static inline CGFloat originXForDrawerOriginAndTargetOriginOffset(CGFloat origin
     UIViewController * sideDrawerViewControllerToPresent = [self sideDrawerViewControllerForSide:drawer];
     UIViewController * sideDrawerViewControllerToHide = [self sideDrawerViewControllerForSide:drawerToHide];
 
-//    [self.childControllerContainerView sendSubviewToBack:sideDrawerViewControllerToHide.view];
+    [self.childControllerContainerView bringSubviewToFront:sideDrawerViewControllerToHide.view];
     [sideDrawerViewControllerToHide.view setHidden:YES];
     [sideDrawerViewControllerToPresent.view setHidden:NO];
     [self resetDrawerVisualStateForDrawerSide:drawer];
